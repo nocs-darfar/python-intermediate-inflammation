@@ -1,6 +1,7 @@
 """Tests for statistics functions within the Model layer."""
 
 import numpy as np
+import pytest
 import numpy.testing as npt
 
 from inflammation.models import daily_mean
@@ -51,3 +52,15 @@ def test_daily_min():
     test_result = np.array([-4, -6, 2])
 
     npt.assert_array_equal(daily_min(test_input), test_result)
+
+from inflammation.models import daily_mean
+
+@pytest.mark.parametrize(
+    "test, expected",
+    [
+        ([ [0, 0], [0, 0], [0, 0] ], [0, 0]),
+        ([ [1, 2], [3, 4], [5, 6] ], [3, 4]),
+    ])
+def test_daily_mean(test, expected):
+    """Test mean function works for array of zeroes and positive integers."""
+    npt.assert_array_equal(daily_mean(np.array(test)), np.array(expected))
